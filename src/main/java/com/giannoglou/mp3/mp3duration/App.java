@@ -17,7 +17,7 @@ public class App
       dc1.setBitRates();
       dc1.setSampleRates();
       dc1.setSamples();
-      double mp3Duration = dc1.mp3Duration("C:\\Users\\cgiannoglou\\Downloads\\10 Math Games That'll Boost Your Brain Power By 80%.mp3");
+      double mp3Duration = dc1.mp3Duration("C:\\Users\\cgiannoglou\\Downloads\\a739a1a4-023d-46dc-887b-778b81c57fa7\\a739a1a4-023d-46dc-887b-778b81c57fa7_part0001.mp3");
       Logger logger = LoggerFactory.getLogger(App.class);
       logger.info("The duration of the mp3 file is: "+mp3Duration);
     }

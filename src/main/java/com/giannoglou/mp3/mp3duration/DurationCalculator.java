@@ -65,7 +65,7 @@ public class DurationCalculator {
     if (buffer[0] == 0x49 && buffer[1] == 0x44 && buffer[2] == 0x33) { // 'ID3'
       id3v2_flags = buffer[5];
     }
-    if ((id3v2_flags & 0x10) == 0) {
+    if ((id3v2_flags & 0x10) != 0) {
       footer_size = 10;
     } else {
       footer_size = 0;
