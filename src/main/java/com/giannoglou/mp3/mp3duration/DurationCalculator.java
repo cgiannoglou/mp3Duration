@@ -1,8 +1,8 @@
 /*
  * @author Christos Giannoglou
- * 
+ *
  * 2018
- * 
+ *
  */
 package com.giannoglou.mp3.mp3duration;
 
@@ -112,7 +112,7 @@ public class DurationCalculator {
 
     String bit_rate_key = "V" + simple_version + "L" + layer;
     int bit_rate_index = (b2 & 0xf0) >> 4;
-    
+
     if (bitRates.containsKey(bit_rate_key) && bit_rate_index!=15 && !layer.equals("0") && !version.equals("0")) {
       bit_rate = bitRates.get(bit_rate_key)[bit_rate_index];
     }
@@ -157,9 +157,8 @@ public class DurationCalculator {
     File f = new File(filename);
     long filesize = f.length();
 
-    try {
+    try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(f))) {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
-      BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));
 
       int read;
       byte[] buff = new byte[1024];
