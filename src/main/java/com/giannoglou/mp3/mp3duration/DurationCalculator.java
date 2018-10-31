@@ -1,8 +1,8 @@
 /*
  * @author Christos Giannoglou
- * 
+ *
  * 2018
- * 
+ *
  */
 package com.giannoglou.mp3.mp3duration;
 
@@ -89,7 +89,7 @@ public class DurationCalculator {
     return (duration / 1000);
   }
 
-  private float[] parseFrameHeader(int[] header) {
+  private double[] parseFrameHeader(int[] header) {
     int b1 = header[1];
     int b2 = header[2];
     String simple_version;
@@ -112,7 +112,7 @@ public class DurationCalculator {
 
     String bit_rate_key = "V" + simple_version + "L" + layer;
     int bit_rate_index = (b2 & 0xf0) >> 4;
-    
+
     if (bitRates.containsKey(bit_rate_key) && bit_rate_index!=15 && !layer.equals("0") && !version.equals("0")) {
       bit_rate = bitRates.get(bit_rate_key)[bit_rate_index];
     }
@@ -132,34 +132,33 @@ public class DurationCalculator {
 
     padding_bit = (b2 & 0x02) >> 1;
 
-    float[] results = {bit_rate, sample_rate,
+    double[] results = {bit_rate, sample_rate,
         frameSize(sample, Integer.parseInt(layer), bit_rate, sample_rate, padding_bit), sample};
     return results;
   }
 
-  public float frameSize(int samples, int layer, int bit_rate, int sample_rate, int paddingBit) {
+  public double frameSize(int samples, int layer, int bit_rate, int sample_rate, int paddingBit) {
     if (Integer.toString(layer).equals("1")) {
        if(sample_rate == 0 || bit_rate == 0) {
        return 0;
        }
-      return ((samples * bit_rate * 125 / sample_rate) + paddingBit * 4);
+      return (((samples * bit_rate * 125) / sample_rate) + paddingBit * 4);
     } else { // layer 2, 3
        if(sample_rate == 0 || bit_rate == 0) {
        return 0;
        }
-      return ((samples * bit_rate * 125 / sample_rate) + paddingBit);
+      return (((samples * bit_rate * 125) / sample_rate) + paddingBit);
     }
   }
 
   public double mp3Duration(String filename) {
     double duration = 0;
-    float[] info = null;
+    double[] info = null;
     File f = new File(filename);
     long filesize = f.length();
 
-    try {
+    try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(f))) {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
-      BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));
 
       int read;
       byte[] buff = new byte[1024];
